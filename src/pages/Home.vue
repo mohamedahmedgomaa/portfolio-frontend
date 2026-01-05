@@ -1,74 +1,74 @@
 <template>
   <section class="hero">
-    <div class="grid">
-      <!-- Left -->
-      <div class="left">
-        <p class="kicker">HI, MY NAME IS</p>
+    <div class="container">
+      <div class="grid">
+        <div class="left">
+          <p class="kicker">HI, MY NAME IS</p>
 
-        <h1 class="title">Mohamed Gomaa.</h1>
+          <h1 class="title">Mohamed Gomaa.</h1>
 
-        <p class="sub">
-          <span class="strong">Senior Full Stack Developer</span> specializing in
-          <span class="strong">Laravel</span> and <span class="strong">ASP.NET Core</span>,
-          building <span class="strong">scalable</span>, <span class="strong">secure</span>, and
-          <span class="strong">high-performance</span> web applications.
-        </p>
+          <p class="sub">
+            <span class="strong">Senior Full Stack Developer</span> specializing in
+            <span class="strong">Laravel</span> and <span class="strong">ASP.NET Core</span>,
+            building <span class="strong">scalable</span>, <span class="strong">secure</span>, and
+            <span class="strong">high-performance</span> web applications.
+          </p>
 
-        <div class="badges">
-          <span class="badge">6+ Years Experience</span>
-          <span class="badge">REST APIs</span>
-          <span class="badge">JWT / Passport</span>
-          <span class="badge">Angular • Vue • Livewire</span>
-          <span class="badge">Azure • SignalR</span>
-        </div>
-
-        <div class="actions">
-          <RouterLink to="/projects" class="btnPrimary">View Projects</RouterLink>
-          <RouterLink to="/contact" class="btnGhost">Hire Me</RouterLink>
-        </div>
-
-        <div class="metaRow">
-          <div class="metaItem">
-            <p class="metaLabel">Location</p>
-            <p class="metaValue">Riyadh, Saudi Arabia</p>
+          <div class="badges">
+            <span class="badge">6+ Years Experience</span>
+            <span class="badge">REST APIs</span>
+            <span class="badge">JWT / Passport</span>
+            <span class="badge">Angular • Vue • Livewire</span>
+            <span class="badge">Azure • SignalR</span>
           </div>
 
-          <div class="metaItem">
-            <p class="metaLabel">Core Stack</p>
-            <p class="metaValue">Laravel • ASP.NET Core • SQL</p>
+          <div class="actions">
+            <RouterLink to="/projects" class="btnPrimary">View Projects</RouterLink>
+            <RouterLink to="/contact" class="btnGhost">Hire Me</RouterLink>
           </div>
 
-          <div class="metaItem">
-            <p class="metaLabel">Strength</p>
-            <p class="metaValue">Architecture • Optimization • Clean Code</p>
+          <div class="metaRow">
+            <div class="metaItem">
+              <p class="metaLabel">Location</p>
+              <p class="metaValue">Riyadh, Saudi Arabia</p>
+            </div>
+
+            <div class="metaItem">
+              <p class="metaLabel">Core Stack</p>
+              <p class="metaValue">Laravel • ASP.NET Core • SQL</p>
+            </div>
+
+            <div class="metaItem">
+              <p class="metaLabel">Strength</p>
+              <p class="metaValue">Architecture • Optimization • Clean Code</p>
+            </div>
+          </div>
+
+          <div class="proof">
+            <div class="proofCard">
+              <p class="proofTitle">Latest .NET Project</p>
+              <p class="proofText">
+                ChatApp (ASP.NET Core 9 + Angular 20) with JWT + SignalR real-time features, deployed to Azure.
+              </p>
+            </div>
+
+            <div class="proofCard">
+              <p class="proofTitle">Laravel Experience</p>
+              <p class="proofText">
+                Scalable backend APIs, business logic modules, repository pattern, and integrations (orders/invoices/wallets).
+              </p>
+            </div>
+          </div>
+
+          <div class="scrollHint">
+            <div class="line"></div>
+            <p>SCROLL</p>
           </div>
         </div>
 
-        <div class="proof">
-          <div class="proofCard">
-            <p class="proofTitle">Latest .NET Project</p>
-            <p class="proofText">
-              ChatApp (ASP.NET Core 9 + Angular 20) with JWT + SignalR real-time features, deployed to Azure.
-            </p>
-          </div>
-
-          <div class="proofCard">
-            <p class="proofTitle">Laravel Experience</p>
-            <p class="proofText">
-              Scalable backend APIs, business logic modules, repository pattern, and integrations (orders/invoices/wallets).
-            </p>
-          </div>
+        <div class="right">
+          <AvatarEyes />
         </div>
-
-        <div class="scrollHint">
-          <div class="line"></div>
-          <p>SCROLL</p>
-        </div>
-      </div>
-
-      <!-- Right -->
-      <div class="right">
-        <AvatarEyes />
       </div>
     </div>
   </section>
@@ -81,9 +81,10 @@ import AvatarEyes from '../components/AvatarEyes.vue'
 
 <style scoped>
 .hero {
-  min-height: calc(100vh - 86px); /* header تقريبًا */
+  min-height: calc(100vh - var(--header-h));
   display: flex;
   align-items: center;
+  padding: 0 0 10px; /* نفس احساس الهوم */
 }
 
 .grid {
@@ -91,11 +92,10 @@ import AvatarEyes from '../components/AvatarEyes.vue'
   display: grid;
   gap: 44px;
   align-items: center;
+  padding-top: 40px;
 }
 @media (min-width: 1024px) {
-  .grid {
-    grid-template-columns: 1.25fr 0.9fr;
-  }
+  .grid { grid-template-columns: 1.25fr 0.9fr; }
 }
 
 .kicker {
@@ -120,10 +120,7 @@ import AvatarEyes from '../components/AvatarEyes.vue'
   margin-top: 14px;
 }
 
-.strong {
-  color: var(--text);
-  font-weight: 900;
-}
+.strong { color: var(--text); font-weight: 900; }
 
 .badges {
   display: flex;
@@ -172,10 +169,7 @@ import AvatarEyes from '../components/AvatarEyes.vue'
   font-size: 13px;
   transition: transform 150ms ease, border-color 200ms ease;
 }
-.btnGhost:hover {
-  transform: translateY(-1px);
-  border-color: rgba(109, 40, 217, 0.35);
-}
+.btnGhost:hover { transform: translateY(-1px); border-color: rgba(109, 40, 217, 0.35); }
 
 .metaRow {
   display: grid;
@@ -184,9 +178,7 @@ import AvatarEyes from '../components/AvatarEyes.vue'
   padding-top: 18px;
   max-width: 820px;
 }
-@media (max-width: 740px) {
-  .metaRow { grid-template-columns: 1fr; }
-}
+@media (max-width: 740px) { .metaRow { grid-template-columns: 1fr; } }
 
 .metaItem {
   border-radius: 18px;
@@ -195,17 +187,8 @@ import AvatarEyes from '../components/AvatarEyes.vue'
   padding: 14px;
 }
 
-.metaLabel {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.metaValue {
-  margin-top: 2px;
-  font-size: 13px;
-  font-weight: 900;
-  color: var(--text);
-}
+.metaLabel { font-size: 11px; color: var(--muted); }
+.metaValue { margin-top: 2px; font-size: 13px; font-weight: 900; color: var(--text); }
 
 .proof {
   display: grid;
@@ -213,9 +196,7 @@ import AvatarEyes from '../components/AvatarEyes.vue'
   margin-top: 18px;
   max-width: 820px;
 }
-@media (min-width: 740px) {
-  .proof { grid-template-columns: 1fr 1fr; }
-}
+@media (min-width: 740px) { .proof { grid-template-columns: 1fr 1fr; } }
 
 .proofCard {
   border-radius: 18px;
@@ -231,7 +212,6 @@ import AvatarEyes from '../components/AvatarEyes.vue'
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
 .proofText {
   margin-top: 6px;
   font-size: 13px;
@@ -249,18 +229,8 @@ import AvatarEyes from '../components/AvatarEyes.vue'
   font-size: 12px;
   letter-spacing: 0.35em;
 }
+.line { width: 60px; height: 1px; background: rgba(20, 30, 50, 0.18); }
 
-.line {
-  width: 60px;
-  height: 1px;
-  background: rgba(20, 30, 50, 0.18);
-}
-
-.right {
-  display: flex;
-  justify-content: center;
-}
-@media (min-width: 1024px) {
-  .right { justify-content: flex-end; }
-}
+.right { display: flex; justify-content: center; }
+@media (min-width: 1024px) { .right { justify-content: flex-end; } }
 </style>

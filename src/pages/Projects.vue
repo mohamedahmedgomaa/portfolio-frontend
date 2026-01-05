@@ -1,113 +1,93 @@
 <template>
-  <section class="wrap">
-    <!-- Header -->
-    <div class="top">
-      <div>
-        <p class="kicker">PORTFOLIO</p>
-        <h1 class="title">Projects</h1>
-        <p class="sub">
-          Selected work focused on <b>scalable backend systems</b>, clean architecture, and full-stack delivery.
-        </p>
+  <section class="page">
+    <div class="container">
+      <div class="projectsTop">
+        <div>
+          <p class="kicker">PORTFOLIO</p>
+          <h1 class="title">Projects</h1>
+          <p class="sub">
+            Selected work focused on <b>scalable backend systems</b>, clean architecture, and full-stack delivery.
+          </p>
+        </div>
+
+        <div class="projectsActions">
+          <input
+              v-model.trim="q"
+              class="search"
+              placeholder="Search (title, stack, role)..."
+              aria-label="Search projects"
+          />
+          <button v-if="q" class="clearBtn" @click="q = ''">Clear</button>
+        </div>
       </div>
 
-      <div class="actions">
-        <input
-            v-model.trim="q"
-            class="search"
-            placeholder="Search (title, stack, role)..."
-            aria-label="Search projects"
-        />
+      <div class="filters">
+        <button class="chip" :class="{ active: selectedTech.size === 0 }" @click="selectedTech.clear()">
+          All
+        </button>
 
-        <button v-if="q" class="clearBtn" @click="q = ''">Clear</button>
+        <button
+            v-for="t in techOptions"
+            :key="t"
+            class="chip"
+            :class="{ active: selectedTech.has(t) }"
+            @click="toggleTech(t)"
+        >
+          {{ t }}
+        </button>
       </div>
-    </div>
 
-    <!-- Filters -->
-    <div class="filters">
-      <button
-          class="chip"
-          :class="{ active: selectedTech.size === 0 }"
-          @click="selectedTech.clear()"
-      >
-        All
-      </button>
+      <div class="cardsGrid">
+        <article v-for="p in filtered" :key="p.slug" class="card">
+          <div class="cardTop">
+            <div class="left">
+              <p class="cardKicker">{{ p.period }}</p>
+              <h3 class="cardTitle">{{ p.title }}</h3>
+              <p class="cardSub">{{ p.subtitle }}</p>
+            </div>
 
-      <button
-          v-for="t in techOptions"
-          :key="t"
-          class="chip"
-          :class="{ active: selectedTech.has(t) }"
-          @click="toggleTech(t)"
-      >
-        {{ t }}
-      </button>
-    </div>
-
-    <!-- Grid -->
-    <div class="grid">
-      <article
-          v-for="p in filtered"
-          :key="p.slug"
-          class="card"
-      >
-        <div class="cardTop">
-          <div class="left">
-            <p class="cardKicker">{{ p.period }}</p>
-            <h3 class="cardTitle">{{ p.title }}</h3>
-            <p class="cardSub">{{ p.subtitle }}</p>
+            <RouterLink class="details" :to="`/projects/${p.slug}`">Details →</RouterLink>
           </div>
 
-          <RouterLink class="details" :to="`/projects/${p.slug}`">
-            Details →
-          </RouterLink>
-        </div>
+          <div class="meta">
+            <div class="metaItem">
+              <p class="metaLabel">Role</p>
+              <p class="metaValue">{{ p.role }}</p>
+            </div>
 
-        <div class="meta">
-          <div class="metaItem">
-            <p class="metaLabel">Role</p>
-            <p class="metaValue">{{ p.role }}</p>
+            <div class="metaItem">
+              <p class="metaLabel">Focus</p>
+              <p class="metaValue">{{ mainFocus(p) }}</p>
+            </div>
           </div>
-          <div class="metaItem">
-            <p class="metaLabel">Focus</p>
-            <p class="metaValue">{{ mainFocus(p) }}</p>
+
+          <div class="stack">
+            <span v-for="s in p.stack" :key="s" class="tag">{{ s }}</span>
           </div>
-        </div>
 
-        <div class="stack">
-          <span v-for="s in p.stack" :key="s" class="tag">{{ s }}</span>
-        </div>
+          <div class="links">
+            <a v-if="p.links?.live" class="linkBtn" :href="p.links.live" target="_blank" rel="noreferrer">
+              Live
+            </a>
 
-        <div class="links">
-          <a
-              v-if="p.links?.live"
-              class="linkBtn"
-              :href="p.links.live"
-              target="_blank"
-              rel="noreferrer"
-          >
-            Live
-          </a>
+            <a
+                v-if="p.links?.github"
+                class="linkBtn ghostLink"
+                :href="p.links.github"
+                target="_blank"
+                rel="noreferrer"
+            >
+              GitHub
+            </a>
 
-          <a
-              v-if="p.links?.github"
-              class="linkBtn"
-              :href="p.links.github"
-              target="_blank"
-              rel="noreferrer"
-          >
-            GitHub
-          </a>
+            <span v-if="!p.links?.live && !p.links?.github" class="muted">Links will be added</span>
+          </div>
+        </article>
+      </div>
 
-          <span v-if="!p.links?.live && !p.links?.github" class="muted">
-            Links will be added
-          </span>
-        </div>
-      </article>
-    </div>
-
-    <!-- Empty state -->
-    <div v-if="filtered.length === 0" class="empty">
-      No projects match your search/filters.
+      <div v-if="filtered.length === 0" class="empty">
+        No projects match your search/filters.
+      </div>
     </div>
   </section>
 </template>
@@ -122,7 +102,7 @@ const selectedTech = reactive(new Set())
 
 const techOptions = computed(() => {
   const set = new Set()
-  projects.forEach(p => p.stack.forEach(s => set.add(s)))
+  projects.forEach(p => (p.stack || []).forEach(s => set.add(s)))
   return Array.from(set)
 })
 
@@ -144,15 +124,13 @@ const filtered = computed(() => {
     ].join(' ').toLowerCase()
 
     const matchesQuery = !query || hay.includes(query)
-    const matchesTech =
-        selectedTech.size === 0 || (p.stack || []).some(s => selectedTech.has(s))
+    const matchesTech = selectedTech.size === 0 || (p.stack || []).some(s => selectedTech.has(s))
 
     return matchesQuery && matchesTech
   })
 })
 
 const mainFocus = (p) => {
-  // short, readable “focus”
   if (p.stack?.includes('SignalR')) return 'Real-time'
   if (p.stack?.some(x => String(x).toLowerCase().includes('auth') || String(x).toLowerCase().includes('jwt')))
     return 'Authentication'
@@ -162,17 +140,18 @@ const mainFocus = (p) => {
 </script>
 
 <style scoped>
-.wrap {
-  padding-top: 10px;
-  padding-bottom: 10px;
+.page {
+  min-height: calc(100vh - var(--header-h));
+  padding: 28px 0 22px;
 }
 
-.top {
+.projectsTop {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 18px;
   flex-wrap: wrap;
+  padding-top: 10px;
 }
 
 .kicker {
@@ -184,28 +163,28 @@ const mainFocus = (p) => {
 
 .title {
   margin-top: 8px;
-  font-size: 44px;
+  font-size: clamp(54px, 6.2vw, 92px);
   font-weight: 900;
-  line-height: 1;
+  line-height: 0.95;
   color: var(--text);
 }
 
 .sub {
-  margin-top: 10px;
+  margin-top: 14px;
   max-width: 62ch;
-  font-size: 14px;
+  font-size: 18px;
   color: var(--muted);
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
-.actions {
+.projectsActions {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .search {
-  width: min(360px, 80vw);
+  width: min(420px, 86vw);
   border-radius: 16px;
   padding: 12px 14px;
   font-size: 13px;
@@ -213,9 +192,7 @@ const mainFocus = (p) => {
   border: 1px solid rgba(20, 30, 50, 0.12);
   outline: none;
 }
-.search:focus {
-  border-color: rgba(109, 40, 217, 0.30);
-}
+.search:focus { border-color: rgba(109, 40, 217, 0.30); }
 
 .clearBtn {
   border-radius: 14px;
@@ -252,16 +229,12 @@ const mainFocus = (p) => {
   box-shadow: 0 10px 22px rgba(109, 40, 217, 0.10);
 }
 
-.grid {
+.cardsGrid {
   margin-top: 18px;
   display: grid;
   gap: 14px;
 }
-@media (min-width: 860px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
+@media (min-width: 860px) { .cardsGrid { grid-template-columns: 1fr 1fr; } }
 
 .card {
   border-radius: 22px;
@@ -325,11 +298,7 @@ const mainFocus = (p) => {
   display: grid;
   gap: 10px;
 }
-@media (min-width: 560px) {
-  .meta {
-    grid-template-columns: 1fr 1fr;
-  }
-}
+@media (min-width: 560px) { .meta { grid-template-columns: 1fr 1fr; } }
 
 .metaItem {
   border-radius: 16px;
@@ -337,16 +306,9 @@ const mainFocus = (p) => {
   border: 1px solid rgba(20, 30, 50, 0.10);
   padding: 12px;
 }
-.metaLabel {
-  font-size: 11px;
-  color: var(--muted);
-}
-.metaValue {
-  margin-top: 3px;
-  font-size: 13px;
-  font-weight: 900;
-  color: var(--text);
-}
+
+.metaLabel { font-size: 11px; color: var(--muted); }
+.metaValue { margin-top: 3px; font-size: 13px; font-weight: 900; color: var(--text); }
 
 .stack {
   margin-top: 12px;
@@ -383,16 +345,16 @@ const mainFocus = (p) => {
   box-shadow: 0 12px 26px rgba(109, 40, 217, 0.18);
   transition: transform 150ms ease, opacity 150ms ease;
 }
-.linkBtn:hover {
-  transform: translateY(-1px);
-  opacity: 0.95;
+.linkBtn:hover { transform: translateY(-1px); opacity: 0.95; }
+
+.ghostLink {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid rgba(20, 30, 50, 0.12);
+  box-shadow: none;
 }
 
-.muted {
-  font-size: 12px;
-  color: var(--muted);
-  font-weight: 700;
-}
+.muted { font-size: 12px; color: var(--muted); font-weight: 700; }
 
 .empty {
   margin-top: 18px;

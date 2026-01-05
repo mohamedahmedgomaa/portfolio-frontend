@@ -1,9 +1,8 @@
 <template>
   <div class="app" :style="cssVars">
-    <!-- full background layer -->
     <div class="bgLayer"></div>
 
-    <!-- Header (full width) -->
+    <!-- Header -->
     <header class="header">
       <div class="container headerInner">
         <RouterLink to="/" class="brand">
@@ -24,7 +23,6 @@
         </nav>
 
         <div class="rightBox">
-          <!-- ✅ Profile badge -->
           <div class="profileBadge" title="Mohamed Gomaa">
             <img :src="profileImg" alt="profile" class="profileImg" />
           </div>
@@ -37,8 +35,8 @@
       </div>
     </header>
 
-    <!-- Page -->
-    <main class="container main">
+    <!-- ✅ Page (full width) -->
+    <main class="main">
       <transition name="page" mode="out-in">
         <RouterView />
       </transition>
@@ -59,9 +57,6 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, RouterLink, RouterView } from 'vue-router'
-
-// ✅ 1) حط الصورة في: src/assets/profile.png
-// ✅ 2) غير الاسم هنا لو استخدمت jpg: profile.jpg
 import profileImg from '../assets/profile.png'
 
 const route = useRoute()
@@ -75,6 +70,7 @@ const cssVars = computed(() => {
     '--muted': t.muted || '#46556B',
     '--accent': t.accent || '#6D28D9',
     '--accent2': t.accent2 || '#22C55E',
+    '--header-h': '86px',
   }
 })
 </script>
@@ -87,7 +83,6 @@ const cssVars = computed(() => {
   overflow-x: hidden;
 }
 
-/* full background */
 .bgLayer {
   position: fixed;
   inset: 0;
@@ -98,7 +93,7 @@ const cssVars = computed(() => {
       linear-gradient(180deg, rgba(244, 248, 255, 0.9), var(--bg));
 }
 
-/* container */
+/* ✅ keep container here for header/footer */
 .container {
   width: min(1120px, calc(100% - 40px));
   margin: 0 auto;
@@ -124,6 +119,8 @@ const cssVars = computed(() => {
   display: flex;
   align-items: center;
   gap: 12px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .logo {
@@ -148,16 +145,8 @@ const cssVars = computed(() => {
 .brandText { display: none; }
 @media (min-width: 640px) { .brandText { display: block; } }
 
-.brandName {
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1.1;
-}
-.brandRole {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.1;
-}
+.brandName { font-size: 14px; font-weight: 900; line-height: 1.1; }
+.brandRole { font-size: 12px; color: var(--muted); line-height: 1.1; }
 
 .nav {
   display: none;
@@ -172,12 +161,11 @@ const cssVars = computed(() => {
   position: relative;
   padding: 6px 2px;
   transition: color 200ms ease;
+  text-decoration: none;
 }
 .navLink:hover { color: var(--text); }
 
-.router-link-active.navLink {
-  color: var(--text);
-}
+.router-link-active.navLink { color: var(--text); }
 .router-link-active.navLink::after {
   content: "";
   position: absolute;
@@ -195,7 +183,6 @@ const cssVars = computed(() => {
   gap: 10px;
 }
 
-/* ✅ profile badge */
 .profileBadge {
   width: 40px;
   height: 40px;
@@ -205,13 +192,8 @@ const cssVars = computed(() => {
   overflow: hidden;
   box-shadow: 0 10px 22px rgba(10, 20, 35, 0.08);
 }
-.profileImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.profileImg { width: 100%; height: 100%; object-fit: cover; }
 
-/* Hire me button */
 .hireBtn {
   display: inline-flex;
   align-items: center;
@@ -223,6 +205,7 @@ const cssVars = computed(() => {
   color: var(--text);
   font-size: 13px;
   font-weight: 800;
+  text-decoration: none;
   transition: transform 150ms ease, border-color 200ms ease;
 }
 .hireBtn:hover {
@@ -237,24 +220,15 @@ const cssVars = computed(() => {
   box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.16);
 }
 
+/* ✅ main is now full width – pages control container */
 .main {
-  padding: 28px 0 60px;
+  padding: 0 0 60px;
 }
 
-.footer {
-  padding: 10px 0 36px;
-}
-.footerLine {
-  height: 1px;
-  background: rgba(20, 30, 50, 0.12);
-}
-.footerText {
-  padding-top: 14px;
-  font-size: 12px;
-  color: var(--muted);
-}
+.footer { padding: 10px 0 36px; }
+.footerLine { height: 1px; background: rgba(20, 30, 50, 0.12); }
+.footerText { padding-top: 14px; font-size: 12px; color: var(--muted); }
 
-/* page transition */
 .page-enter-active, .page-leave-active {
   transition: opacity 220ms ease, transform 220ms ease;
 }

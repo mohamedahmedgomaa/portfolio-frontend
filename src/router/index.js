@@ -16,12 +16,13 @@ export const router = createRouter({
             component: Home,
             meta: {
                 theme: {
-                    bg: '#F4F8FF',
+                    // Cool Indigo (clean, premium)
+                    bg: '#EEF2FF',
                     panel: '#FFFFFF',
                     text: '#0B1220',
-                    muted: '#46556B',
-                    accent: '#6D28D9', // purple
-                    accent2: '#22C55E', // green
+                    muted: '#44506A',
+                    accent: '#4F46E5', // indigo
+                    accent2: '#22C55E', // green pop
                 },
             },
         },
@@ -31,12 +32,13 @@ export const router = createRouter({
             component: Projects,
             meta: {
                 theme: {
-                    bg: '#F6FFFB',
-                    panel: '#FFFFFF',
-                    text: '#061A12',
-                    muted: '#3B5B50',
-                    accent: '#0EA5E9', // sky
-                    accent2: '#10B981', // emerald
+                    // Mint / Teal (fresh, different)
+                    bg: '#ECFDF5',
+                    panel: '#F8FFFC',
+                    text: '#052016',
+                    muted: '#2F5C4B',
+                    accent: '#0F766E', // teal
+                    accent2: '#06B6D4', // cyan
                 },
             },
         },
@@ -47,12 +49,13 @@ export const router = createRouter({
             props: true,
             meta: {
                 theme: {
-                    bg: '#FFF7ED',
-                    panel: '#FFFFFF',
-                    text: '#1A120B',
-                    muted: '#6B4F3A',
-                    accent: '#F97316', // orange
-                    accent2: '#A855F7', // purple
+                    // Warm Amber (stands out)
+                    bg: '#FFFBEB',
+                    panel: '#FFF7ED',
+                    text: '#1F1307',
+                    muted: '#6A4B2A',
+                    accent: '#F59E0B', // amber
+                    accent2: '#EF4444', // red accent
                 },
             },
         },
@@ -62,12 +65,13 @@ export const router = createRouter({
             component: About,
             meta: {
                 theme: {
-                    bg: '#F7F7FF',
-                    panel: '#FFFFFF',
-                    text: '#111236',
-                    muted: '#4B4E7A',
-                    accent: '#2563EB', // blue
-                    accent2: '#EC4899', // pink
+                    // Lavender / Violet (soft but distinct)
+                    bg: '#F5F3FF',
+                    panel: '#FBFAFF',
+                    text: '#151335',
+                    muted: '#4E4A7A',
+                    accent: '#7C3AED', // violet
+                    accent2: '#F97316', // orange pop
                 },
             },
         },
@@ -77,12 +81,13 @@ export const router = createRouter({
             component: Contact,
             meta: {
                 theme: {
-                    bg: '#FFF1F2',
-                    panel: '#FFFFFF',
+                    // Rose (clearly different)
+                    bg: '#FFF1F5',
+                    panel: '#FFF8FB',
                     text: '#2A0B12',
                     muted: '#7A3A4A',
-                    accent: '#DB2777', // pink
-                    accent2: '#8B5CF6', // violet
+                    accent: '#E11D48', // rose
+                    accent2: '#2563EB', // blue contrast
                 },
             },
         },
@@ -92,12 +97,12 @@ export const router = createRouter({
             component: NotFound,
             meta: {
                 theme: {
-                    bg: '#F5F5F5',
+                    bg: '#F3F4F6',
                     panel: '#FFFFFF',
-                    text: '#111111',
-                    muted: '#555555',
-                    accent: '#111111',
-                    accent2: '#999999',
+                    text: '#111827',
+                    muted: '#6B7280',
+                    accent: '#111827',
+                    accent2: '#9CA3AF',
                 },
             },
         },

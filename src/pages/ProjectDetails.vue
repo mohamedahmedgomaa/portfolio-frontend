@@ -1,100 +1,92 @@
 <template>
-  <section v-if="project" class="wrap">
-    <!-- Top -->
-    <div class="top">
-      <div>
-        <p class="kicker">CASE STUDY</p>
-        <h1 class="title">{{ project.title }}</h1>
-        <p class="sub">{{ project.subtitle }}</p>
+  <section v-if="project" class="page">
+    <div class="container">
+      <div class="top">
+        <div>
+          <p class="kicker">CASE STUDY</p>
+          <h1 class="title">{{ project.title }}</h1>
+          <p class="sub">{{ project.subtitle }}</p>
+        </div>
+
+        <div class="topActions">
+          <RouterLink class="backBtn" to="/projects">← Back</RouterLink>
+
+          <a v-if="project.links?.live" class="actionBtn" :href="project.links.live" target="_blank" rel="noreferrer">
+            Live
+          </a>
+
+          <a
+              v-if="project.links?.github"
+              class="actionBtn ghost"
+              :href="project.links.github"
+              target="_blank"
+              rel="noreferrer"
+          >
+            GitHub
+          </a>
+        </div>
       </div>
 
-      <div class="topActions">
-        <RouterLink class="backBtn" to="/projects">← Back</RouterLink>
+      <div class="summary">
+        <div class="box">
+          <p class="label">Role</p>
+          <p class="value">{{ project.role }}</p>
+        </div>
 
-        <a
-            v-if="project.links?.live"
-            class="actionBtn"
-            :href="project.links.live"
-            target="_blank"
-            rel="noreferrer"
-        >
-          Live
-        </a>
+        <div class="box">
+          <p class="label">Period</p>
+          <p class="value">{{ project.period }}</p>
+        </div>
 
-        <a
-            v-if="project.links?.github"
-            class="actionBtn ghost"
-            :href="project.links.github"
-            target="_blank"
-            rel="noreferrer"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
-
-    <!-- Summary blocks -->
-    <div class="summary">
-      <div class="box">
-        <p class="label">Role</p>
-        <p class="value">{{ project.role }}</p>
-      </div>
-
-      <div class="box">
-        <p class="label">Period</p>
-        <p class="value">{{ project.period }}</p>
-      </div>
-
-      <div class="box">
-        <p class="label">Focus</p>
-        <p class="value">{{ focus }}</p>
-      </div>
-    </div>
-
-    <!-- Stack -->
-    <div class="card">
-      <h2 class="h2">Tech Stack</h2>
-      <div class="tags">
-        <span v-for="s in project.stack" :key="s" class="tag">{{ s }}</span>
-      </div>
-    </div>
-
-    <!-- Highlights + Impact -->
-    <div class="twoCols">
-      <div class="card">
-        <h2 class="h2">What I built</h2>
-        <ul class="list">
-          <li v-for="h in project.highlights" :key="h">{{ h }}</li>
-        </ul>
+        <div class="box">
+          <p class="label">Focus</p>
+          <p class="value">{{ focus }}</p>
+        </div>
       </div>
 
       <div class="card">
-        <h2 class="h2">Impact</h2>
-        <ul class="list">
-          <li v-for="i in project.impact" :key="i">{{ i }}</li>
-        </ul>
+        <h2 class="h2">Tech Stack</h2>
+        <div class="tags">
+          <span v-for="s in project.stack" :key="s" class="tag">{{ s }}</span>
+        </div>
       </div>
-    </div>
 
-    <!-- Optional: next steps / notes -->
-    <div class="card">
-      <h2 class="h2">Notes</h2>
-      <p class="p">
-        This case study is presented in a minimal format for clarity.
-        Next, we can add more details like architecture diagram, modules breakdown, and screenshots.
-      </p>
-    </div>
+      <div class="twoCols">
+        <div class="card">
+          <h2 class="h2">What I built</h2>
+          <ul class="list">
+            <li v-for="h in project.highlights" :key="h">{{ h }}</li>
+          </ul>
+        </div>
 
-    <div class="bottom">
-      <RouterLink class="backBtn" to="/projects">← Back to Projects</RouterLink>
+        <div class="card">
+          <h2 class="h2">Impact</h2>
+          <ul class="list">
+            <li v-for="i in project.impact" :key="i">{{ i }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Notes</h2>
+        <p class="p">
+          This case study is presented in a minimal format for clarity.
+          Next, we can add more details like architecture diagram, modules breakdown, and screenshots.
+        </p>
+      </div>
+
+      <div class="bottom">
+        <RouterLink class="backBtn" to="/projects">← Back to Projects</RouterLink>
+      </div>
     </div>
   </section>
 
-  <!-- Not found -->
-  <section v-else class="notFound">
-    <p class="nfTitle">Project not found</p>
-    <p class="nfSub">The project you’re looking for doesn’t exist (or the slug is wrong).</p>
-    <RouterLink class="backBtn" to="/projects">← Back to Projects</RouterLink>
+  <section v-else class="page">
+    <div class="container notFound">
+      <p class="nfTitle">Project not found</p>
+      <p class="nfSub">The project you’re looking for doesn’t exist (or the slug is wrong).</p>
+      <RouterLink class="backBtn" to="/projects">← Back to Projects</RouterLink>
+    </div>
   </section>
 </template>
 
@@ -121,9 +113,9 @@ const focus = computed(() => {
 </script>
 
 <style scoped>
-.wrap {
-  padding-top: 8px;
-  padding-bottom: 10px;
+.page {
+  min-height: calc(100vh - var(--header-h));
+  padding: 28px 0 22px;
 }
 
 .top {
@@ -132,6 +124,7 @@ const focus = computed(() => {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  padding-top: 10px;
 }
 
 .kicker {
@@ -143,16 +136,16 @@ const focus = computed(() => {
 
 .title {
   margin-top: 8px;
-  font-size: 44px;
+  font-size: clamp(36px, 4.6vw, 64px);
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 1.03;
   color: var(--text);
 }
 
 .sub {
-  margin-top: 10px;
+  margin-top: 12px;
   max-width: 70ch;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--muted);
   line-height: 1.7;
 }
@@ -161,6 +154,7 @@ const focus = computed(() => {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .backBtn {
@@ -209,9 +203,7 @@ const focus = computed(() => {
   gap: 12px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
-@media (max-width: 760px) {
-  .summary { grid-template-columns: 1fr; }
-}
+@media (max-width: 760px) { .summary { grid-template-columns: 1fr; } }
 
 .box {
   border-radius: 18px;
@@ -273,9 +265,7 @@ const focus = computed(() => {
   display: grid;
   gap: 14px;
 }
-@media (min-width: 900px) {
-  .twoCols { grid-template-columns: 1fr 1fr; }
-}
+@media (min-width: 900px) { .twoCols { grid-template-columns: 1fr 1fr; } }
 
 .list {
   margin-top: 12px;
@@ -295,25 +285,9 @@ const focus = computed(() => {
   font-weight: 700;
 }
 
-.bottom {
-  margin-top: 16px;
-}
+.bottom { margin-top: 16px; }
 
-.notFound {
-  padding: 30px 0;
-}
-
-.nfTitle {
-  font-size: 20px;
-  font-weight: 900;
-  color: var(--text);
-}
-
-.nfSub {
-  margin-top: 6px;
-  font-size: 13px;
-  color: var(--muted);
-  font-weight: 700;
-  line-height: 1.6;
-}
+.notFound { padding: 10px 0; }
+.nfTitle { font-size: 20px; font-weight: 900; color: var(--text); }
+.nfSub { margin-top: 6px; font-size: 13px; color: var(--muted); font-weight: 700; line-height: 1.6; }
 </style>
